@@ -58,17 +58,20 @@ func Parse(fileLocation string) FileConfig {
 			s = strings.Trim(s, ";")
 			finalS, _ := strconv.ParseInt(s, 0, 64)
 			fileConfig.MaxLeaseTime = finalS
-		} else if strings.Contains(scanner.Text(), "subnet ") && strings.Contains(scanner.Text(), "netmask ") {
-			subnetIP := strings.Trim(scanner.Text(), "subnet ")
-			subnetSplit := strings.Split(subnetIP, " netmask ")
-			fileConfig.SubnetConfig.Subnet = net.ParseIP(subnetSplit[0])
-			fileConfig.SubnetConfig.Netmask = subnetSplit[1]
+		} else if strings.Contains(scanner.Text(), "subnet") && strings.Contains(scanner.Text(), "netmask") {
+			subnetIP := strings.Trim(scanner.Text(), "subnet")
+			subnetIP = strings.TrimSpace(subnetIP)
+			subnetSplit := strings.Split(subnetIP, "netmask")
+			fileConfig.SubnetConfig.Subnet = net.ParseIP(strings.TrimSpace(subnetSplit[0]))
+			fileConfig.SubnetConfig.Netmask = strings.TrimSpace(subnetSplit[1])
 		} else if strings.Contains(scanner.Text(), "range ") {
 			rangeBlock := strings.Trim(scanner.Text(), "range ")
 			rangeBlock = strings.Trim(rangeBlock, ";")
+			rangeBlock = strings.ReplaceAll(rangeBlock, "   ", " ")
+			rangeBlock = strings.TrimSpace(rangeBlock)
 			rangeSplit := strings.Split(rangeBlock, " ")
-			fileConfig.SubnetConfig.RangeStart = net.ParseIP(rangeSplit[0])
-			fileConfig.SubnetConfig.RangeEnd = net.ParseIP(rangeSplit[1])
+			fileConfig.SubnetConfig.RangeStart = net.ParseIP(strings.TrimSpace(rangeSplit[0]))
+			fileConfig.SubnetConfig.RangeEnd = net.ParseIP(strings.TrimSpace(rangeSplit[1]))
 		} else if strings.Contains(scanner.Text(), "option routers ") {
 			s := strings.TrimSpace(scanner.Text())
 			s = strings.ReplaceAll(s, "option routers", "")
