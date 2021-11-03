@@ -1,8 +1,13 @@
 package main
 
-import "github.com/zulandar/go-dhcp-management"
+import (
+	"fmt"
+	"github.com/zulandar/go-dhcp-management"
+)
 
 
 func main() {
-	go_dhcp_management.Parse("./tests/dhcpd.conf")
+	response := go_dhcp_management.Parse("./tests/dhcpd.conf")
+
+	fmt.Printf("Results %v", response)
 }
