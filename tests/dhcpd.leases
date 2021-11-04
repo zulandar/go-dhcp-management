@@ -1,0 +1,32 @@
+# The format of this file is documented in the dhcpd.leases(5) manual page.
+# This lease file was written by isc-dhcp-4.4.1
+
+# authoring-byte-order entry is generated, DO NOT DELETE
+authoring-byte-order little-endian;
+
+server-duid "\000\001\000\001)\024(\366\000\025]\002\353\006";
+
+lease 192.168.1.2 {
+  starts 2 2021/11/02 16:53:11;
+  ends 2 2021/11/02 17:03:11;
+  cltt 2 2021/11/02 16:53:11;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 00:15:5d:02:eb:07;
+  uid "\001\000\025]\002\353\007";
+  set vendor-class-identifier = "d-i";
+  client-hostname "softwaredev";
+}
+lease 192.168.1.3 {
+  starts 2 2021/11/02 16:58:11;
+  ends 2 2021/11/02 17:08:11;
+  cltt 2 2021/11/02 16:58:11;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 00:15:5d:02:eb:07;
+  uid "\001\000\025]\002\353\007";
+  set vendor-class-identifier = "d-i";
+  client-hostname "softwaredev2";
+}

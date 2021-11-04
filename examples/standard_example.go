@@ -26,8 +26,11 @@ func main() {
 
 	parseResponse := go_dhcp_management.Parse("./tests/dhcpd.conf")
 	generatedResponse := go_dhcp_management.Generate(fileConfig, "./tests/dhcpd.conf.example")
+	parseLeases := go_dhcp_management.ParseLeases("./tests/dhcpd.leases")
 
 	fmt.Printf("Results %v\n", parseResponse)
 
 	fmt.Printf("Generated Results: %v", generatedResponse)
+
+	fmt.Printf("Generated Results: %v", parseLeases)
 }

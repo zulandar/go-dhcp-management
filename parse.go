@@ -2,6 +2,7 @@ package go_dhcp_management
 
 import (
 	"bufio"
+	leases "github.com/npotts/go-dhcpd-leases"
 	"log"
 	"net"
 	"os"
@@ -91,4 +92,17 @@ func Parse(fileLocation string) FileConfig {
 
 	return fileConfig
 
+}
+
+func ParseLeases(fileLocation string) []leases.Lease {
+	file, err := os.Open(fileLocation)
+	if err != nil {
+		log.Fatalf("Error opening file: %s - with error: %s", fileLocation, err)
+	}
+
+	defer file.Close()
+
+	leaseData := leases.Parse(file)
+
+	return leaseData
 }
