@@ -43,10 +43,13 @@ func Parse(fileLocation string) FileConfig {
 		}
 
 		if strings.Contains(scanner.Text(), "domain-name ") {
-			fileConfig.DomainName = strings.Trim(scanner.Text(), "option domain-name ")
+			s := strings.Trim(scanner.Text(), "option domain-name ")
+			s = strings.ReplaceAll(s, "\"", "")
+			fileConfig.DomainName = strings.ReplaceAll(s, ";", "")
 		} else if strings.Contains(scanner.Text(), "domain-name-servers ") {
-			s := strings.Trim(scanner.Text(), "option domain-name-servers ")
-			s = strings.TrimSpace(s)
+			s := strings.ReplaceAll(scanner.Text(), "option domain-name-servers", "")
+			s = strings.ReplaceAll(s, " ", "")
+			s = strings.ReplaceAll(s, ";", "")
 			fileConfig.DomainNameServers = strings.Split(s, ",")
 		} else if strings.Contains(scanner.Text(), "default-lease-time ") {
 			s := strings.Trim(scanner.Text(), "default-lease-time ")
@@ -61,8 +64,10 @@ func Parse(fileLocation string) FileConfig {
 		} else if strings.Contains(scanner.Text(), "subnet") && strings.Contains(scanner.Text(), "netmask") {
 			subnetIP := strings.Trim(scanner.Text(), "subnet")
 			subnetIP = strings.TrimSpace(subnetIP)
+			subnetIP = strings.ReplaceAll(subnetIP, " {", "")
 			subnetSplit := strings.Split(subnetIP, "netmask")
 			fileConfig.SubnetConfig.Subnet = net.ParseIP(strings.TrimSpace(subnetSplit[0]))
+			fileConfig.SubnetConfig.Netmask = strings.TrimRight(subnetSplit[1], "{")
 			fileConfig.SubnetConfig.Netmask = strings.TrimSpace(subnetSplit[1])
 		} else if strings.Contains(scanner.Text(), "range ") {
 			rangeBlock := strings.Trim(scanner.Text(), "range ")
@@ -74,7 +79,7 @@ func Parse(fileLocation string) FileConfig {
 			fileConfig.SubnetConfig.RangeEnd = net.ParseIP(strings.TrimSpace(rangeSplit[1]))
 		} else if strings.Contains(scanner.Text(), "option routers ") {
 			s := strings.TrimSpace(scanner.Text())
-			s = strings.ReplaceAll(s, "option routers", "")
+			s = strings.ReplaceAll(s, "option routers ", "")
 			s = strings.Trim(s, ";")
 			fileConfig.SubnetConfig.OptionRouter = s
 		}
